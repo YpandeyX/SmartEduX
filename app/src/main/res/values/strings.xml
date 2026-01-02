@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Team SquadX</string>
+
+    <string name="default_web_client_id">
+        841739615996-dtq0q1kcia9mq2krvdmblegbndjunq2a.apps.googleusercontent.com
+    </string>
+</resources>
