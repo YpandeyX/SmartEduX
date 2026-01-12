@@ -28,6 +28,14 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, NotificationActivity::class.java))
         }
 
+        binding.teacherDirectory.setOnClickListener {
+            startActivity(Intent(this, FacultyDirectoryActivity::class.java))
+        }
+
+        binding.chatBot.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
+        }
+
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_profile -> {

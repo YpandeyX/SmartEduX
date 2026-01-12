@@ -215,6 +215,7 @@
                     android:layout_marginTop="12dp">
 
                     <LinearLayout
+                        android:id="@+id/resources"
                         android:layout_width="0dp"
                         android:layout_height="110dp"
                         android:layout_weight="1"
@@ -241,6 +242,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/applyLeave"
                         android:layout_width="0dp"
                         android:layout_height="110dp"
                         android:layout_weight="1"
@@ -268,37 +270,98 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- UPCOMING CLASSES -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upcoming Classes"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="24dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#161B22"
-                android:padding="16dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Advanced Algebra"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/teacherDirectory"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_quick_action_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="8dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10:00 AM • Dr. Jane Doe"
-                    android:textColor="#9CA3AF"
-                    android:textSize="12sp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_teacherdirectory"
+                        app:tint="#4F8DFF"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Teacher Directory"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/chatBot"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_quick_action_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_chatbot"
+                        app:tint="#4F8DFF"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Chatbot"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"/>
+                </LinearLayout>
             </LinearLayout>
+
+            <!-- UPCOMING CLASSES -->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Upcoming Classes"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_marginTop="24dp" />-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="#161B22"-->
+<!--                android:padding="16dp"-->
+<!--                android:layout_marginTop="12dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Advanced Algebra"-->
+<!--                    android:textColor="#FFFFFF"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="10:00 AM • Dr. Jane Doe"-->
+<!--                    android:textColor="#9CA3AF"-->
+<!--                    android:textSize="12sp" />-->
+<!--            </LinearLayout>-->
 
         </LinearLayout>
     </ScrollView>
