@@ -4,6 +4,10 @@ SmartEduX is a **smart classroom & attendance management Android application** d
 The system supports **students and teachers**, real-time attendance tracking, and role-based notifications.
 
 ---
+For Testing
+Email id - eduxsmart@gmail.com
+Password - 123456
+---
 
 ## 🚀 Features
 
