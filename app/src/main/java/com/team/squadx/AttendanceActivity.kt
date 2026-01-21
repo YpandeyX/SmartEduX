@@ -1,6 +1,7 @@
 package com.team.squadx
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -21,8 +22,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.team.squadx.databinding.ActivityScanAttendanceBinding
 import java.util.concurrent.Executors
 import kotlin.math.*
-import android.content.Intent
-
 
 class AttendanceActivity : AppCompatActivity() {
 
@@ -47,7 +46,9 @@ class AttendanceActivity : AppCompatActivity() {
             else requestCameraPermission()
         }
 
-        binding.btnOpenTeacherQr.setOnClickListener { startActivity(Intent(this, TeacherQrActivity::class.java)) }
+        binding.btnOpenTeacherQr.setOnClickListener {
+            startActivity(Intent(this, TeacherQrActivity::class.java))
+        }
     }
 
     // ---------------- CAMERA ----------------
@@ -85,6 +86,8 @@ class AttendanceActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    // 🔥 FIXED HERE
+    @OptIn(androidx.camera.core.ExperimentalGetImage::class)
     private fun processQr(imageProxy: ImageProxy) {
 
         if (!isScanning) {

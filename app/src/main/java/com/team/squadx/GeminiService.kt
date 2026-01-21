@@ -4,7 +4,7 @@ import com.google.ai.client.generativeai.GenerativeModel
 
 object GeminiService {
 
-    private const val API_KEY = "AIzaSyB8LT2p9SGkyTpsfp6aXzdQxw0a-ZxXwXE"
+    private const val API_KEY = "API KEY HIDDEN"
 
     suspend fun extractQuery(text: String): String {
 

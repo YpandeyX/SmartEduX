@@ -20,6 +20,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var googleClient: GoogleSignInClient
 
+    private val demoEmail = "eduxsmart@gmail.com"
+    private val demoPassword = "123456"
+
+
     // 🔁 Google Sign-In launcher
     private val googleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -42,13 +46,18 @@ class LoginActivity : AppCompatActivity() {
 
         setupGoogleSignIn()
         setupClicks()
+
+        binding.btnDemo.setOnClickListener {
+            loginAsDemoUser()
+        }
+
     }
 
     // ---------------- CLICK HANDLERS ----------------
 
     private fun setupClicks() {
 
-        // 🔐 EMAIL / PASSWORD LOGIN (UNCHANGED)
+        // 🔐 EMAIL / PASSWORD LOGIN
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val pass = binding.etPassword.text.toString().trim()
@@ -61,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
             loginUser(email, pass)
         }
 
-        // 🔵 GOOGLE LOGIN
+        // 🔵 GOOGLE LOGIN (ONLY FOR EXISTING USERS)
         binding.btnGoogleLogin.setOnClickListener {
             googleLauncher.launch(googleClient.signInIntent)
         }
@@ -97,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    // ---------------- GOOGLE SETUP ----------------
+    // ---------------- GOOGLE SIGN-IN SETUP ----------------
 
     private fun setupGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -108,19 +117,56 @@ class LoginActivity : AppCompatActivity() {
         googleClient = GoogleSignIn.getClient(this, gso)
     }
 
+    /**
+     * 🔴 IMPORTANT LOGIC:
+     * - Google login is allowed ONLY if email already exists
+     * - New users must signup via email/password first
+     */
     private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
 
-        auth.signInWithCredential(credential)
-            .addOnSuccessListener {
-                checkUserProfile()
+        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
+        val email = googleAccount?.email
+
+        if (email == null) {
+            Toast.makeText(this, "Google account error", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // 🔍 Check if email already exists in Firebase Auth
+        auth.fetchSignInMethodsForEmail(email)
+            .addOnSuccessListener { result ->
+
+                val methods = result.signInMethods ?: emptyList()
+
+                // ❌ NEW USER → BLOCK GOOGLE LOGIN
+                if (methods.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "Please sign up using Email & Password first",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    auth.signOut()
+                    googleClient.signOut()
+                    return@addOnSuccessListener
+                }
+
+                // ✅ EXISTING USER → ALLOW GOOGLE LOGIN
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(credential)
+                    .addOnSuccessListener {
+                        checkUserProfile()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Google login check failed", Toast.LENGTH_SHORT).show()
             }
     }
 
-    // ---------------- PROFILE CHECK (SAME LOGIC) ----------------
+    // ---------------- PROFILE CHECK ----------------
 
     private fun checkUserProfile() {
         val uid = auth.currentUser?.uid ?: return
@@ -140,4 +186,31 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to load profile", Toast.LENGTH_SHORT).show()
             }
     }
+
+    // ---------------- DEMO Button -------------------
+    private fun loginAsDemoUser() {
+
+        FirebaseAuth.getInstance()
+            .signInWithEmailAndPassword(demoEmail, demoPassword)
+            .addOnSuccessListener {
+
+                Toast.makeText(
+                    this,
+                    "$demoEmail is logged in",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    "Demo login failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    }
+
 }

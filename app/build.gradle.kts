@@ -2,8 +2,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services") // ✅ Correct
-    id ("kotlin-kapt")
+    id("com.google.gms.google-services")
+
+    // ✅ KSP instead of KAPT (FIX)
+    id("com.google.devtools.ksp") version "1.9.23-1.0.20"
 }
 
 android {
@@ -25,12 +27,16 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 }
 
@@ -42,11 +48,8 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // ---------------- FIREBASE (CORRECT WAY) ----------------
-    // 🔥 ONE BOM to control all Firebase versions
+    // ---------------- FIREBASE (BOM) ----------------
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-
-    // Firebase modules (NO versions here ❗)
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
@@ -59,26 +62,32 @@ dependencies {
 
     implementation("com.google.guava:guava:32.1.3-android")
 
-
     // ---------------- ML KIT QR ----------------
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     // ---------------- ZXING ----------------
     implementation("com.google.zxing:core:3.5.2")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // ---------------- GOOGLE SERVICES ----------------
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    // ---------------- GLIDE (FIXED) ----------------
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    ksp("com.github.bumptech.glide:ksp:4.16.0")
+
+    // ---------------- AI ----------------
+    implementation("com.google.ai.client.generativeai:generativeai:0.4.0")
+
+    // ---------------- NETWORK ----------------
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // ---------------- OPTIONAL ----------------
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    kapt ("com.github.bumptech.glide:compiler:4.16.0")
-
-    implementation("com.google.ai.client.generativeai:generativeai:0.4.0")
-
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    // ---------------- TESTING ----------------
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

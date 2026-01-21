@@ -10,7 +10,7 @@ import org.json.JSONObject
 object GeminiApi {
 
     // 🔑 Use your Gemini API key here
-    private const val API_KEY = "AIzaSyB8LT2p9SGkyTpsfp6aXzdQxw0a-ZxXwXE"
+    private const val API_KEY = "API KEY HIDDEN"
 
     private const val URL =
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$API_KEY"
